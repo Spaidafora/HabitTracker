@@ -1,45 +1,58 @@
 import sys
 from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem
-from PySide6.QtCore import QDateTime, QTimeZone
+from PySide6.QtCore import QDateTime
 from design import Ui_habitWidget  # Import the compiled UI Python file (created from .ui)
-
+import json  # save data
 
 
 app = QApplication(sys.argv)
+mainWidget = QWidget()
 
-# Create the main widget, which will act as the container for the UI components
-main_widget = QWidget()
-
-# Create an instance of the Ui_habitWidget class, which contains the setup for the UI layout
+# Instance of the Ui_habitWidget class, which contains the setup for the UI layout
 ui = Ui_habitWidget()
 
-# Apply the design (UI components) to the main_widget by calling setupUi. This populates the widget with buttons, labels, etc.
-ui.setupUi(main_widget)
-
-
+# Display the GUI
+ui.setupUi(mainWidget)
 time = QDateTime.currentDateTime().toString()
 
-####################  code test here
-
-
-
-
-def add_habit_date_to_table():
-    habit_input = ui.textInputHabit.text()
-    row_position = ui.tableWidget.rowCount()
-    ui.tableWidget.insertRow((row_position))
-    ui.tableWidget.setItem(row_position,0,QTableWidgetItem(habit_input))
-    ui.tableWidget.setItem(row_position, 1, QTableWidgetItem(time))
+def addHabitDateToTable():
+    habitInput = ui.textInputHabit.text()
+    rowPosition = ui.tableWidget.rowCount()
+    ui.tableWidget.insertRow((rowPosition))
+    ui.tableWidget.setItem(rowPosition, 0, QTableWidgetItem(habitInput))
+    ui.tableWidget.setItem(rowPosition, 1, QTableWidgetItem(time))
     ui.textInputHabit.clear()
 
+def saveDataToJson():
+    habits = []
+    for row in range(ui.tableWidget.rowCount()):
+        habit = ui.tableWidget.item(row, 0).text()
+        date = ui.tableWidget.item(row, 1).text()
+        habits.append({
+            "habits" : habit,
+            "date" : date
+        })
 
-ui.addButton.clicked.connect(add_habit_date_to_table)
+    with open('habitsData.json', 'w') as f:
+        json.dump(habits, f)
+
+def loadDataFromJson():
+    f = open('habitsData.json')
+    data = json.load(f)
+    for habits in data:
+        rowPosition = ui.tableWidget.rowCount()
+        ui.tableWidget.insertRow(rowPosition)
+        ui.tableWidget.setItem(rowPosition, 0, QTableWidgetItem(habits['habits']))
+        ui.tableWidget.setItem(rowPosition, 1, QTableWidgetItem(habits['date']))
+    f.close()
+
+# Connect the save button to save_data method
+
+ui.addButton.clicked.connect(addHabitDateToTable)
+ui.saveButton.clicked.connect(saveDataToJson)
+
+ui.loadButton.clicked.connect(loadDataFromJson)
 
 
-##################
-
-# Display the main widget with all UI elements
-main_widget.show()
-
-# Execute the application event loop, which keeps the window open and responsive
+mainWidget.show()
 sys.exit(app.exec())

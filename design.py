@@ -69,7 +69,7 @@ class Ui_habitWidget(object):
         font1.setBold(True)
         self.groupBox.setFont(font1)
         self.groupBox.setAutoFillBackground(False)
-        self.groupBox.setStyleSheet(u"border: 1px solid black;")
+        self.groupBox.setStyleSheet(u"gridline-color: orange;")
         self.tableWidget = QTableWidget(self.groupBox)
         if (self.tableWidget.columnCount() < 2):
             self.tableWidget.setColumnCount(2)
@@ -79,9 +79,12 @@ class Ui_habitWidget(object):
         self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         self.tableWidget.setObjectName(u"tableWidget")
         self.tableWidget.setGeometry(QRect(10, 21, 611, 251))
+        self.tableWidget.setStyleSheet(u"gridline-color: orange;")
         self.tableWidget.setColumnCount(2)
+        self.tableWidget.horizontalHeader().setVisible(True)
         self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(310)
+        self.tableWidget.verticalHeader().setVisible(False)
 
         self.retranslateUi(habitWidget)
 
@@ -90,9 +93,15 @@ class Ui_habitWidget(object):
 
     def retranslateUi(self, habitWidget):
         habitWidget.setWindowTitle(QCoreApplication.translate("habitWidget", u"Form", None))
+        self.layoutWidget.setStyleSheet(QCoreApplication.translate("habitWidget", u"gridline-color: orange;", None))
+        self.labelInputHabit.setStyleSheet(QCoreApplication.translate("habitWidget", u"gridline-color: orange;", None))
         self.labelInputHabit.setText(QCoreApplication.translate("habitWidget", u"Habit:", None))
+        self.textInputHabit.setStyleSheet(QCoreApplication.translate("habitWidget", u"gridline-color: orange;", None))
+        self.addButton.setStyleSheet(QCoreApplication.translate("habitWidget", u"gridline-color: orange;", None))
         self.addButton.setText(QCoreApplication.translate("habitWidget", u"Add", None))
+        self.saveButton.setStyleSheet(QCoreApplication.translate("habitWidget", u"gridline-color: orange;", None))
         self.saveButton.setText(QCoreApplication.translate("habitWidget", u"Save", None))
+        self.loadButton.setStyleSheet(QCoreApplication.translate("habitWidget", u"gridline-color: orange;", None))
         self.loadButton.setText(QCoreApplication.translate("habitWidget", u"Load", None))
         self.groupBox.setTitle(QCoreApplication.translate("habitWidget", u"Habits", None))
         ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
